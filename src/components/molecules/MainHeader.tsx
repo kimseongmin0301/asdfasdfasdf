@@ -1,5 +1,7 @@
 import { Box, ListItemText } from "@mui/material";
 import FaceIcon from '@mui/icons-material/Face';
+import StarIcon from '@mui/icons-material/Star';
+import LocalParkingIcon from '@mui/icons-material/LocalParking';
 import { Logo } from "../atoms/area/Logo";
 import { Li } from "../atoms/area/Li";
 import { Ul } from "../atoms/area/Ul";
@@ -10,8 +12,7 @@ type MainHeaderProps = {
 }
 
 export const MainHeader = (props: MainHeaderProps) => {
-    const loginList:(string | Element) = ['로그인', '회원가입', <FaceIcon />]
-    const list = ['전문가방송', '카톡 문자', '아카데미', '투자전략', '공지사항', 'X1신규가이드', '로보스탁', 'X1 NOTICE'];
+    const loginList: (string | JSX.Element)[] = ['로그인', '회원가입', <FaceIcon />, <StarIcon />, <LocalParkingIcon />];
 
 
     return (
@@ -19,7 +20,7 @@ export const MainHeader = (props: MainHeaderProps) => {
             <Box className="main_header" sx={{display:'flex', justifyContent:"space-between", margin:"0 auto", overflow:"hidden", maxWidth:"1180px", minWidth:"1180px"}}>
                 <Logo />
                 <Ul>
-                    {list.map((item, index) => (
+                    {loginList.map((item, index) => (
                         <Li key={index}>
                             <ListItemText>{item}</ListItemText>
                         </Li>
