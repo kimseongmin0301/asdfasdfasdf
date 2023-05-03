@@ -47,6 +47,7 @@ body *{
 
 ul{
   text-align: center;
+  list-style: none;
 }
 
 li{
@@ -241,4 +242,10 @@ h3, h5{
   font-size: 16px;
   font-family: bold;
   width: 250px;
+}
+.slick-slider{
+  text-align:center;
+  height: 400px;
+  margin: 10px;
+  background-color: aquamarine;
 }

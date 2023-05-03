@@ -7,9 +7,17 @@ import Face3Icon from '@mui/icons-material/Face3';
 import Face4Icon from '@mui/icons-material/Face4';
 import Button from '@mui/material/Button';
 import StarIcon from '@mui/icons-material/Star';
-
+import MySlider from '../../../MySlider';
 
 export const MainContainer = () => {
+    const slider = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        autoplay: true,
+    };
 
     const profileList = [
         {
@@ -111,7 +119,6 @@ export const MainContainer = () => {
                                 </ul>
                             </div>
                         </Box>
-                        
                     </Box>
                 </Box>
             </Box>
@@ -142,14 +149,19 @@ export const MainContainer = () => {
                                 {list.face}
                                 </div>
                                 <div>
-                                {list.name}<br /><Button variant="contained">방송보기</Button>
+                                {list.name}<br /><Button variant="contained" sx={{backgroundColor:'green'}}>방송보기</Button>
                                 </div>
                             </div>
                             </li>
                         ))}
                     </ul>
                 </Box>
-            </Box>
+            </Box>   
+            <Box>
+                <Box className="inner">
+                    <MySlider />
+                </Box>
+            </Box>                     
         </Box>
     )
 }
