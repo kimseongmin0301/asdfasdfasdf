@@ -1,13 +1,23 @@
 import { Box, ListItem, ListItemText } from "@mui/material";
 import { Ul } from "../atoms/area/Ul";
 import { Li } from "../atoms/area/Li";
-import React from "react";
+import React, { useState } from "react";
 
 type MenuHedaer = {
     children: React.ReactNode;
 }
 
-export const MenuHeader = (props: MenuHedaer) => {
+export const MenuHeader = () => {
+
+    const [isHovered, setIsHovered] = useState(false);
+
+    const handleMouseEnter = () => {
+        setIsHovered(true);
+    }
+
+    const handleMouseLeave = () => {
+        setIsHovered(false);
+    }
 
     const list = [
         {
@@ -62,16 +72,43 @@ export const MenuHeader = (props: MenuHedaer) => {
         },
     ]
 
+    const parentUlStyle = {
+        display: 'flex',
+        listStyle: 'none',
+        padding: '10px 0',
+        alignItems: 'flex-start',
+        height: isHovered ? '300px' : '60px',
+        border: "1px solid #f4f4f4",
+        margin: "0 auto",
+        width: '100%',
+        maxWidth: '1180px',
+        minWidth: '1180px',
+        backgroundColor: 'white',
+        zIndex: 10,
+    }
+
+    const parentLiStyle = {
+        flex: 1,
+        lineHeight: 'normal',
+        alineItems: 'baseline',
+    }   
+
+    const menuHeaderStyle = {
+        height: isHovered ? '300px' : '60px',
+
+    }
+
+
     return (
-        <Box className="menu_header">
-            <Ul className="menu_list">
+        <Box className="menu_header" style={menuHeaderStyle} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+            <Ul className="menu_list" style={parentUlStyle} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                 {list.map((item, index) => (
-                        <Li key={index}>
+                        <Li key={index} style={parentLiStyle}>
                             <ListItemText>{item.text}</ListItemText>
-                            {item.children && item.children.length > 0 && (
+                            {item.children && item.children.length > 0 && isHovered && (
                                 <Ul>                                 
                                     {item.children?.map((child, childIndex) => (
-                                        <Li className="sub_menu" key={childIndex}>{child.text}</Li>
+                                        <Li className="sub_menu" key={childIndex} style={{padding: 0, textAlign:'center', flexDirection:'column'}}>{child.text}</Li>
                                     ))}
                                 </Ul>   
                             )}

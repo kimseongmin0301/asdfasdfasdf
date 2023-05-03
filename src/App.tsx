@@ -1,17 +1,22 @@
 import React from 'react';
 import Button from '@mui/material/Button'
 import './App.css';
-import { MainHeader } from './components/molecules/MainHeader';
-import { MenuHeader } from './components/molecules/MenuHeader';
+import { Main } from './components/atomic/pages/Main';
+import { Login } from './components/atomic/pages/Login';
+import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+
 
 function App() {
+  
   return (
-    // <MainHeader>
-      
-    // </MainHeader>
-    <MenuHeader>
-
-    </MenuHeader>
+    <>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </Router>
+    </>
   )
 }
 

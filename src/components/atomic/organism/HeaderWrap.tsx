@@ -4,7 +4,7 @@ interface HeaderProps {
     children: React.ReactNode
 }
 
-export const Header = (props: HeaderProps) => {
+export const HeaderWrap = (props: HeaderProps) => {
 
     return (
         <Box className="header" sx={{height:"120px"}}>
