@@ -5,6 +5,8 @@ import LocalParkingIcon from '@mui/icons-material/LocalParking';
 import { Logo } from "../atoms/area/Logo";
 import { Li } from "../atoms/area/Li";
 import { Ul } from "../atoms/area/Ul";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 
 type MainHeaderProps = {
@@ -12,7 +14,18 @@ type MainHeaderProps = {
 }
 
 export const MainHeader = () => {
-    const loginList: (string | JSX.Element)[] = ['로그인', '회원가입', <FaceIcon />, <LocalParkingIcon />, <StarIcon />];
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const loginFalse: (string | JSX.Element)[] = [<Link to="/login">로그인</Link>, <Link to="/join">회원가입</Link>, <FaceIcon />, <LocalParkingIcon />, <StarIcon />];
+    const loginTrue: (string | JSX.Element)[] = ['로그아웃', <FaceIcon />, <LocalParkingIcon />, <StarIcon />]
+    
+    const handleLogin = () => {
+        setIsLoggedIn(true);
+    }
+
+    const handleLogout = () => {
+        setIsLoggedIn(false);
+    }
+
     const ulStyle = {
         display: 'flex',
         flexDecoration: 'column',
@@ -32,11 +45,19 @@ export const MainHeader = () => {
             <Box className="main_header" sx={{display:'flex', justifyContent:"space-between", margin:"0 auto", overflow:"hidden", maxWidth:"1180px", minWidth:"1180px"}}>
                 <Logo />
                 <Ul style={ulStyle}>
-                    {loginList.map((item, index) => (
-                        <Li key={index} style={liStyle}>
+                    {!isLoggedIn ? (
+                        loginFalse.map((item, index) => (
+                          <Li key={index} style={liStyle}>
                             <ListItemText>{item}</ListItemText>
-                        </Li>
-                    ))}
+                          </Li>
+                        ))
+                      ) : (
+                        loginTrue.map((item, index) => (
+                          <Li key={index} style={liStyle}>
+                            <ListItemText>{item}</ListItemText>
+                          </Li>
+                        ))
+                      )}
                 </Ul>
             </Box>
         </Box>

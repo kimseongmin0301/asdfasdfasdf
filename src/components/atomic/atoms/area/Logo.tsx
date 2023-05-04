@@ -1,4 +1,5 @@
 import { Box } from "@mui/material"
+import { Link } from "react-router-dom"
 
 export const Logo = () => {
     const style = {
@@ -9,7 +10,7 @@ export const Logo = () => {
 
     return (
         <Box sx={{display:"flex", alignItems:"center"}}>
-            <img src="https://img.x1.co.kr/x1/images/common/logo_x1.png" style={style} alt="X1엑스원" />
+            <Link to="/"><img src="https://img.x1.co.kr/x1/images/common/logo_x1.png" style={style} alt="X1엑스원" /></Link>
         </Box>
     ) 
 }

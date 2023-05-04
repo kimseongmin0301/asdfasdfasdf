@@ -72,6 +72,10 @@ li{
   text-align: center;
 }
 
+.header {
+  background: #fff
+}
+
 .wrap {
   height: 100%;
   width: 100%;
@@ -248,4 +252,74 @@ h3, h5{
   height: 400px;
   margin: 10px;
   background-color: aquamarine;
+}
+
+.location{
+  display: flex;
+  justify-content: flex-end;
+  margin: 20px;  
+}
+
+#login_text h2{
+  margin: 0;
+}
+
+.sub_container{
+  width: 980px !important;
+}
+
+#login_text{
+  display: flex;
+  flex-direction: column;
+  margin: 0 40px;
+}
+
+.login_box{
+  display: flex;
+  margin:20px 40px;
+  border: 1px solid black;
+  padding: 40px 0;
+}
+
+form{
+  display: flex;
+  flex-direction: column;
+  margin:0 auto;
+}
+
+#login{
+  display: flex;
+  margin:0 auto;
+
+}
+
+#login_input{
+  display: flex;
+  flex-direction: column;
+}
+
+#login_input input{
+  width: 405px;
+  border: 1px solid #dbdbdb;
+  padding: 15px;
+  font-size: 24px;
+  color: #dc0082;
+  width: 405px;
+  margin-bottom: 10px;
+}
+
+#login_button button{
+  width: 135px;
+  height: 130px;
+  margin-left: 10px;
+}
+
+#join {
+  display: flex;
+  justify-content: space-between;
+  margin: 40px 0;
+}
+
+#join_form input{
+  margin: 20px 0;
 }

@@ -10,15 +10,6 @@ import StarIcon from '@mui/icons-material/Star';
 import MySlider from '../../../MySlider';
 
 export const MainContainer = () => {
-    const slider = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        autoplay: true,
-    };
-
     const profileList = [
         {
             face: <FaceIcon />,
