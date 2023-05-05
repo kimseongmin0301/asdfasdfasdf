@@ -1,89 +1,93 @@
 import { Box, Button } from "@mui/material"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { regId, regPw } from "../../../../utils/modules"
 import { Link, useNavigate } from "react-router-dom"
 
 export const JoinContainer = () => {
-    const [userId, setUserId] = useState("");
-    const [userPw, setUserPw] = useState("");
-    const [errorId, setErrorId] = useState("");
-    const [errorPw, setErrorPw] = useState("");
-    const [checkPw, setCheckPw] = useState("");
-    
-    const [joinCheck, setJoinCheck] = useState(false);
-    
-    const navigate = useNavigate();
+    const [errorId, setErrorId] = useState(["", false]);
+    const [errorPw, setErrorPw] = useState(["", false]);
+    const [errorCheckPw, setErrorCheckPw] = useState(["", false]);
 
+    const [members, setMembers] = useState<{id: string, pw: string}[]>([]);
+    
+    // useRef
+    const inputId = useRef<HTMLInputElement>(null);
+    const inputPw = useRef<HTMLInputElement>(null);
+    const inputCheckPw = useRef<HTMLInputElement>(null);
+
+    const navigate = useNavigate();
+    
     const handleSubmit = (e:any) => {
         e.preventDefault();
 
-        if(joinCheck){
+        if(errorId[1] && errorPw[1] && errorCheckPw[1]){
             const formData = new FormData(e.target);
             const idValue = formData.get('id');
             const pwValue = formData.get('pw');
-    
-            const data = {
-                id: idValue,
-                pw: pwValue,
+
+            const member = {
+                id: idValue !== null ? idValue as string : '',
+                pw: pwValue !== null ? pwValue as string : ''
             }
 
-            localStorage.setItem("user", JSON.stringify(data));
-            navigate('/login');
+            setMembers((prevMembers) => [...prevMembers, member]);
+
+
+            localStorage.setItem("user", JSON.stringify(members));
+            // navigate('/login');
+            alert('올바름')
         } else {
-            alert("회원정보를 다시 입력해주세요")
+            alert("회원정보를 다시 입력해주세요");
         }
     }
     
 
-    const handleChangeId = (e:any) => {
-        const newUserId = e.target.value;
-        setUserId(newUserId);
+    const handleChangeId = () => {
+        const newUserId = inputId.current?.value || '';
 
-        if(!regId(userId)) {
-            setErrorId("아이디는 4-12자, 영어+숫자로 작성바랍니다.")
+        if(!regId(newUserId)) {
+            setErrorId(["아이디는 4-12자, 소문자 영어+숫자로 작성바랍니다.", false])
         } else {
-            setErrorId("");
+            setErrorId(["", true]);
             const localUser = localStorage.getItem("user");
-            if(localUser){
-                const user = JSON.parse(localUser);
-                if(user.id === newUserId){
-                    setErrorId("이미 사용중인 아이디입니다.");
-                    setJoinCheck(false); 
-                } else{
-                    setErrorId("");
-                    setJoinCheck(true);
-                }
-            }
+            const localData = localUser ? JSON.parse(localUser) : [];
+            console.log(localData);
+            // localData.map((member: {id: string, pw: string}) => {
+            //     console.log(member.id)
+            // });
+            // if(user.id.includes(newUserId)){
+            //     setErrorId(["이미 사용중인 아이디입니다.", false]);
+            // }
         }
     }
+ 
+    const handleChangePw = () => {
+        const newUserPw = inputPw.current?.value || '';
+        const checkPw = inputCheckPw.current?.value || '';
 
-    const handleChangePw = (e:any) => {
-        setUserPw(e.target.value);
-        console.log(e.target.value)
-        if(!regPw(userPw)) {
-            setErrorPw("비밀번호는 8-12자, 영어+숫자로 작성바랍니다.")
-            setJoinCheck(false); 
+        if(!regPw(newUserPw)) {
+            setErrorPw(["비밀번호는 8-12자, 영어+숫자로 작성바랍니다", false])
         } else {
-            setErrorPw("");
-            setJoinCheck(true);
+            setErrorPw(["", true]);
+        }
+
+        if(newUserPw !== checkPw) {
+            setErrorCheckPw(['동일한 비밀번호를 작성해주세요', false]);
+        } else {
+            setErrorCheckPw(['', true]);
         }
     }
 
-    const handleChangeCheckPw = (e:any) => {
-        if(userPw !== e.target.value){
-            setCheckPw("비밀번호가 일치하지 않습니다.")
-            setJoinCheck(false); 
-        } else{
-            setCheckPw("")
-            if(userPw !== checkPw) {
-                setCheckPw("비밀번호가 일치하지 않습니다.")
-                setJoinCheck(false);
-            } else{
-                setJoinCheck(true);
-            }
+    const handleChangeCheckPw = () => {
+        const userPw = inputPw.current?.value || '';
+        const checkPw = inputCheckPw.current?.value || '';
+    
+        if(userPw !== checkPw) {
+            setErrorCheckPw(['동일한 비밀번호를 작성해주세요', false]);
+        } else {
+            setErrorCheckPw(['', true]);
         }
-    }
-
+    }  
 
     return (
         <Box>
@@ -103,19 +107,19 @@ export const JoinContainer = () => {
                                 <div style={{display:"flex", flexDirection:"column"}}>
                                     <Box sx={{display:'flex', justifyContent:'space-between', width:'350px' ,margin:"10px"}}>
                                         <label style={{display:'flex', alignItems:'center'}}>아이디</label>
-                                        <input type="text" name="id" className="join_id" onChange={handleChangeId}/>
+                                        <input type="text" name="id" className="join_id" onChange={handleChangeId} ref={inputId} />
                                     </Box>
                                     <span id="al_id" style={{color:'red'}}>{errorId}</span>
                                     <Box sx={{display:'flex', justifyContent:'space-between', width:'350px',margin:"10px"}}>
                                         <label style={{display:'flex', alignItems:'center'}}>패스워드</label>
-                                        <input type="password" name="pw" className="join_pw" onChange={handleChangePw}/>
+                                        <input type="password" name="pw" className="join_pw" onChange={handleChangePw} ref={inputPw} />
                                     </Box>
                                     <span id="al_pw" style={{color:'red'}}>{errorPw}</span>
                                     <Box sx={{display:'flex', justifyContent:'space-between', width:'350px',margin:"10px"}}>
                                         <label style={{display:'flex', alignItems:'center'}}>패스워드 확인</label>
-                                        <input type="password" name="pw" className="join_pw" onChange={handleChangeCheckPw}/>
+                                        <input type="password" name="pw" className="join_pw" onChange={handleChangeCheckPw} ref={inputCheckPw} />
                                     </Box>
-                                    <span id="al_pw" style={{color:'red'}}>{checkPw}</span>
+                                    <span id="al_pw" style={{color:'red'}}>{errorCheckPw}</span>
                                 </div>
                                 <Button variant="contained" type="submit" style={{margin:'20px 0'}}>회원가입</Button>
                             </form>

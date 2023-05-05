@@ -8,17 +8,6 @@ import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
 
 function App() {
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  useEffect(() => {
-    const rootID = {
-      id: 'root',
-      pw: 1234,
-    }
-    localStorage.setItem('user', JSON.stringify(rootID));
-
-    // const loginStatus = localStorage.getItem('login') === "true" ? true : false;  
-    // setIsLoggedIn(loginStatus);
-  })
 
   return (
     <>
