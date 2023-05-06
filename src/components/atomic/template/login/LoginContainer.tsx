@@ -11,19 +11,30 @@ export const LoginContainer = () => {
         e.preventDefault();
 
         const formData = new FormData(e.target);
-        const idValue = formData.get('id');
-        const pwValue = formData.get('password');
+        const idValue = formData.get('id') !== null ? String(formData.get('id')) : '';
+        const pwValue = formData.get('password') !== null ? String(formData.get('password')) : '';
         
         const local = localStorage.getItem('user');
-        const data = JSON.parse(local!);
-        
-        if(idValue == data.id && pwValue == data.pw){
-            localStorage.setItem("login", String(true));
-            navigate('/');
-        } else{
+
+        if(local) {
+            const data = JSON.parse(local);
+
+            data.map((m: {id: string, pw: string}) => {
+                if(m.id === idValue && m.pw === pwValue) {
+                    localStorage.setItem("login", String(true));
+                    localStorage.setItem("loggedInUser", idValue);
+                    navigate('/');
+                } else{
+                    setShowAlert(true);
+                }
+            })
+        } else {
             setShowAlert(true);
         }
 
+        if(idValue === '' || pwValue === ''){
+            setShowAlert(true);
+        }
     }
 
     return (

@@ -5,27 +5,40 @@ import LocalParkingIcon from '@mui/icons-material/LocalParking';
 import { Logo } from "../atoms/area/Logo";
 import { Li } from "../atoms/area/Li";
 import { Ul } from "../atoms/area/Ul";
-import { useState } from "react";
-import { Link } from "react-router-dom";
-
-
-type MainHeaderProps = {
-    children: React.ReactNode;
-}
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react"
 
 export const MainHeader = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const loginFalse: (string | JSX.Element)[] = [<Link to="/login">로그인</Link>, <Link to="/join">회원가입</Link>, <FaceIcon />, <LocalParkingIcon />, <StarIcon />];
-    const loginTrue: (string | JSX.Element)[] = ['로그아웃', <FaceIcon />, <LocalParkingIcon />, <StarIcon />]
-    
-    const handleLogin = () => {
-        setIsLoggedIn(true);
-    }
 
-    const handleLogout = () => {
+    const navigate = useNavigate();
+
+      const [isLoggedIn, setIsLoggedIn] = useState(() => {
+      const loggedIn = localStorage.getItem("login") === 'true';
+
+      return loggedIn;
+   });
+
+    useEffect(() => {
+        const loggedIn = localStorage.getItem("login") === 'true';
+        
+        if(loggedIn) {
+          setIsLoggedIn(true);
+        } else {
+          setIsLoggedIn(false);
+        }
+    }, [isLoggedIn])
+
+    const handleLoggedOut = () => {
+        localStorage.setItem('loggedInUser', '');
+        localStorage.setItem('login', 'false');
+
         setIsLoggedIn(false);
-    }
+        navigate('/');
+      }
+    
 
+    const loginFalse: (string | JSX.Element)[] = [<Link to="/login">로그인</Link>, <Link to="/join">회원가입</Link>, <Link to='/login'><FaceIcon /></Link>, <LocalParkingIcon />, <StarIcon />];
+    const loginTrue: (string | JSX.Element)[] = [<Box onClick={handleLoggedOut}>로그아웃</Box>, <Link to={`/mypage/${localStorage.getItem("loggedInUser")}`}><FaceIcon /></Link>, <LocalParkingIcon />, <StarIcon />]    
     const ulStyle = {
         display: 'flex',
         flexDecoration: 'column',
@@ -54,7 +67,7 @@ export const MainHeader = () => {
                       ) : (
                         loginTrue.map((item, index) => (
                           <Li key={index} style={liStyle}>
-                            <ListItemText>{item}</ListItemText>
+                            <ListItemText sx={{cursor:"pointer"}}>{item}</ListItemText>
                           </Li>
                         ))
                       )}

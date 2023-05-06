@@ -1,14 +1,21 @@
 import { Box, Button } from "@mui/material"
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { regId, regPw } from "../../../../utils/modules"
 import { Link, useNavigate } from "react-router-dom"
 
+
 export const JoinContainer = () => {
+
+    // error check
     const [errorId, setErrorId] = useState(["", false]);
     const [errorPw, setErrorPw] = useState(["", false]);
     const [errorCheckPw, setErrorCheckPw] = useState(["", false]);
 
-    const [members, setMembers] = useState<{id: string, pw: string}[]>([]);
+    // localstorage members data
+    const [members, setMembers] = useState<{id: string, pw: string}[]>(() => {
+        const localData = localStorage.getItem('user');
+        return localData ? JSON.parse(localData) : [];
+    });
     
     // useRef
     const inputId = useRef<HTMLInputElement>(null);
@@ -29,19 +36,20 @@ export const JoinContainer = () => {
                 id: idValue !== null ? idValue as string : '',
                 pw: pwValue !== null ? pwValue as string : ''
             }
+            
+            setMembers((prevMembers) => {
+                const updatedMembers = [...prevMembers, member];
+                localStorage.setItem("user", JSON.stringify(updatedMembers));
+                return updatedMembers;
+            });
 
-            setMembers((prevMembers) => [...prevMembers, member]);
-
-
-            localStorage.setItem("user", JSON.stringify(members));
-            // navigate('/login');
-            alert('올바름')
+            alert("회원가입이 완료되었습니다.")
+            navigate('/login');
         } else {
             alert("회원정보를 다시 입력해주세요");
         }
     }
     
-
     const handleChangeId = () => {
         const newUserId = inputId.current?.value || '';
 
@@ -49,15 +57,12 @@ export const JoinContainer = () => {
             setErrorId(["아이디는 4-12자, 소문자 영어+숫자로 작성바랍니다.", false])
         } else {
             setErrorId(["", true]);
-            const localUser = localStorage.getItem("user");
-            const localData = localUser ? JSON.parse(localUser) : [];
-            console.log(localData);
-            // localData.map((member: {id: string, pw: string}) => {
-            //     console.log(member.id)
-            // });
-            // if(user.id.includes(newUserId)){
-            //     setErrorId(["이미 사용중인 아이디입니다.", false]);
-            // }
+            
+            members.map((member: {id: string, pw: string}) => {
+                if(member.id.includes(newUserId)){
+                    setErrorId(["이미 사용중인 아이디입니다.", false]);
+                }
+            });
         }
     }
  
