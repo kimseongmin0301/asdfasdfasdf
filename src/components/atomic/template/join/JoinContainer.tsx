@@ -37,6 +37,7 @@ export const JoinContainer = () => {
                 pw: pwValue !== null ? pwValue as string : ''
             }
             
+            // 기존에 있던 데이터에 새로운 데이터 추가. 회원가입
             setMembers((prevMembers) => {
                 const updatedMembers = [...prevMembers, member];
                 localStorage.setItem("user", JSON.stringify(updatedMembers));
@@ -50,6 +51,7 @@ export const JoinContainer = () => {
         }
     }
     
+    // 아이디 input 값 이벤트
     const handleChangeId = () => {
         const newUserId = inputId.current?.value || '';
 
@@ -66,6 +68,7 @@ export const JoinContainer = () => {
         }
     }
  
+    // 패스워드 input 값 이벤트
     const handleChangePw = () => {
         const newUserPw = inputPw.current?.value || '';
         const checkPw = inputCheckPw.current?.value || '';
@@ -83,6 +86,7 @@ export const JoinContainer = () => {
         }
     }
 
+    // 패스워드 확인값 이벤트
     const handleChangeCheckPw = () => {
         const userPw = inputPw.current?.value || '';
         const checkPw = inputCheckPw.current?.value || '';

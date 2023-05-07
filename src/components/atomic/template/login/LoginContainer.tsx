@@ -14,20 +14,27 @@ export const LoginContainer = () => {
         const idValue = formData.get('id') !== null ? String(formData.get('id')) : '';
         const pwValue = formData.get('password') !== null ? String(formData.get('password')) : '';
         
+        // 회원가입이 된 데이터
         const local = localStorage.getItem('user');
 
         if(local) {
             const data = JSON.parse(local);
+            if(data.length === 0) {
+                setShowAlert(true);
+            } else {
+                data.map((m: {id: string, pw: string}) => {
+                    if(m.id === idValue && m.pw === pwValue) {
+                        // 로그인 상태 업데이트
+                        localStorage.setItem("login", String(true));
 
-            data.map((m: {id: string, pw: string}) => {
-                if(m.id === idValue && m.pw === pwValue) {
-                    localStorage.setItem("login", String(true));
-                    localStorage.setItem("loggedInUser", idValue);
-                    navigate('/');
-                } else{
-                    setShowAlert(true);
-                }
-            })
+                        // 로그인 정보 업데이트
+                        localStorage.setItem("loggedInUser", idValue);
+                        navigate('/');
+                    } else{
+                        setShowAlert(true);
+                    }
+                })
+            }
         } else {
             setShowAlert(true);
         }

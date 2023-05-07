@@ -21,6 +21,7 @@ export const MypageContainer = () =>{
     const [userInfo, setUserInfo] = useState<Member>({id: '', pw: ''});
     const navigate = useNavigate();
 
+    // 로그인 된 정보 가져오기
     useEffect(() => {
         const user = localStorage.getItem("loggedInUser");
         const data = localStorage.getItem("user");
@@ -33,6 +34,7 @@ export const MypageContainer = () =>{
         })
     }, []);
     
+    // table에 넣을 데이터 타입지정 함수
     const createData = (
         id: string | JSX.Element | null,
         pw: string | JSX.Element | null,
@@ -41,21 +43,25 @@ export const MypageContainer = () =>{
         id, pw, button
     });
 
+    // 탈퇴버튼 클릭
     const handleWithDrawal = () => {
         const confirmMsg = '정말로 탈퇴하시겠습니까?';
         const result: boolean = window.confirm(confirmMsg);
-        if(result) {
-            const loggedInUser = localStorage.getItem("loggedInUser");
-
-            const data = localStorage.getItem("user");
-            const members = JSON.parse(data!);
-            const newMembers = members.filter((member: Member) => {
-                return member.id !== loggedInUser;
-            });        
-            const confirmMsg = "정말로 탈퇴하시겠습니가?"
+        if(result) {    
+            const confirmMsg = "확인을 누르시면 탈퇴처리가 완료됩니다."
             const result: boolean = window.confirm(confirmMsg);
             if(result){
+                const loggedInUser = localStorage.getItem("loggedInUser");
+
+                const data = localStorage.getItem("user");
+                const members = JSON.parse(data!);
+
+                const newMembers = members.filter((member: Member) => {
+                    return member.id !== loggedInUser;
+                });    
+
                 localStorage.setItem("user", JSON.stringify(newMembers));
+
                 localStorage.setItem("loggedInUser", '');
                 localStorage.setItem('login', 'false');
                 alert('다시 만날 기회가 있으면 좋겠습니다.');
